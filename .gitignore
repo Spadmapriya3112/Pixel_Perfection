@@ -1,0 +1,12 @@
+# Ignore local databases
+instance/
+*.db
+
+# Ignore image processing results
+static/processed/*
+static/uploads/*
+
+# Ignore secrets and environment
+.env
+__pycache__/
+venv/

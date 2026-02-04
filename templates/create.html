@@ -1,0 +1,464 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+    :root {
+        --brand-main: #ffffff;
+        --brand-accent: #ff8a80; 
+        --bg-editor: #1a1a2e;
+        --ui-card: rgba(255, 255, 255, 0.05);
+        --soft-border: rgba(255, 255, 255, 0.1);
+        --panel-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
+    }
+
+    body {
+        font-family: 'Quicksand', sans-serif;
+        background-color: var(--bg-editor);
+        color: var(--brand-main);
+        overflow-x: hidden;
+        margin: 0;
+    }
+
+    .brand-logo-editor {
+        font-family: 'Dancing Script', cursive;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: white;
+        margin: 0;
+    }
+    .brand-accent-span { color: var(--brand-accent); }
+
+    .studio-header {
+        padding: 20px; 
+        background: rgba(26, 26, 46, 0.8); 
+        backdrop-filter: blur(10px); 
+        border-bottom: 1px solid var(--soft-border); 
+        text-align: center;
+    }
+
+    .editor-grid-container {
+        display: grid;
+        grid-template-columns: 1fr 400px;
+        height: calc(100vh - 120px); 
+        overflow: hidden;
+        background: var(--bg-editor);
+    }
+
+    .image-section {
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.2);
+        border-right: 1px solid var(--soft-border);
+        overflow: hidden;
+    }
+
+    .controls-section {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(10px);
+        padding: 30px;
+        overflow-y: auto; 
+        box-shadow: var(--panel-shadow);
+    }
+
+    .canvas-wrapper {
+        position: relative;
+        width: 100%;
+        max-height: 70vh;
+        background: #000;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        border: 1px solid var(--soft-border);
+    }
+
+    .section-title {
+        font-family: 'Dancing Script', cursive;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--brand-accent);
+        margin-top: 30px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .section-title::after {
+        content: "";
+        flex-grow: 1;
+        height: 1px;
+        background: var(--soft-border);
+    }
+
+    .slider-item { margin-bottom: 22px; }
+    .slider-item label { 
+        display: flex; 
+        justify-content: space-between; 
+        margin-bottom: 8px; 
+        font-weight: 600; 
+        color: #ccc; 
+        font-size: 0.9rem; 
+    }
+    
+    .value-tag {
+        color: var(--brand-accent);
+        font-size: 0.85rem;
+        background: rgba(255, 138, 128, 0.1);
+        padding: 2px 8px;
+        border-radius: 5px;
+    }
+
+    input[type=range] { 
+        width: 100%; 
+        accent-color: var(--brand-accent); 
+        cursor: pointer; 
+        height: 6px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 10px;
+        appearance: none;
+    }
+
+    .action-btn {
+        padding: 10px 18px; 
+        border-radius: 25px; 
+        border: 1px solid var(--soft-border);
+        background: rgba(255,255,255,0.05); 
+        color: #eee; 
+        font-weight: 600; 
+        cursor: pointer; 
+        transition: 0.3s;
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .action-btn:hover { 
+        border-color: var(--brand-accent); 
+        color: var(--brand-accent); 
+        transform: translateY(-2px);
+        background: rgba(255,255,255,0.1);
+    }
+
+    .filter-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 30px;
+    }
+    
+    .filter-btn {
+        padding: 12px; 
+        border-radius: 12px; 
+        border: 1px solid var(--soft-border);
+        background: rgba(255,255,255,0.05); 
+        color: #bbb; 
+        cursor: pointer; 
+        font-weight: 600; 
+        text-align: center;
+        font-size: 0.85rem;
+        transition: 0.3s;
+    }
+
+    .filter-btn.active { 
+        background: var(--brand-accent); 
+        color: white; 
+        border-color: var(--brand-accent);
+        box-shadow: 0 4px 12px rgba(255, 138, 128, 0.3);
+    }
+
+    .commit-btn {
+        width: 100%; 
+        padding: 18px; 
+        background: var(--brand-accent); 
+        color: white; 
+        border: none; 
+        border-radius: 30px; 
+        font-weight: 700; 
+        cursor: pointer; 
+        margin-bottom: 30px; 
+        letter-spacing: 1px; 
+        transition: 0.3s;
+        box-shadow: 0 8px 20px rgba(255, 138, 128, 0.2);
+    }
+
+    .commit-btn:hover {
+        transform: scale(1.02);
+        box-shadow: 0 10px 25px rgba(255, 138, 128, 0.4);
+    }
+
+    .cropper-view-box { outline: 1px solid var(--brand-accent); }
+    .cropper-line, .cropper-point { background-color: var(--brand-accent); }
+</style>
+
+<div class="studio-header">
+    <div class="brand-logo-editor">Pixel<span class="brand-accent-span"> Perfection</span></div>
+    <p style="color: #ff8a80; margin: 0; font-size: 0.9rem; font-family: 'Quicksand'; font-weight: 500; letter-spacing: 2px; text-transform: lowercase;">create something beautiful</p>
+</div>
+
+{% if not processed %}
+<div style="padding: 80px 20px; text-align: center;">
+    <div style="max-width: 600px; margin: 0 auto; background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); padding: 60px; border-radius: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); border: 1px solid var(--soft-border);">
+        <form action="{{ url_for('create') }}" method="POST" enctype="multipart/form-data" id="upload-form">
+            <div onclick="document.getElementById('file-input').click()" style="height: 300px; border: 2px dashed var(--brand-accent); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; background: rgba(255,138,128,0.05);">
+                <i class="fa-solid fa-cloud-upload" style="font-size: 3.5rem; color: var(--brand-accent); margin-bottom: 20px;"></i>
+                <h3 style="color: #fff; font-family: 'Dancing Script'; font-size: 2rem;">Upload your memory</h3>
+                <p style="color: #aaa; font-size: 1rem;">JPEG, PNG, or RAW supported</p>
+                <input type="file" name="file" id="file-input" hidden onchange="this.form.submit()">
+            </div>
+        </form>
+    </div>
+</div>
+{% else %}
+
+<div class="editor-grid-container">
+    <div class="image-section" id="dropZone">
+        <div class="canvas-wrapper" id="wrapper">
+            <img id="main-preview" src="{{ url_for('static', filename=processed) }}" style="display: block; max-width: 100%;">
+        </div>
+        
+        <div style="margin-top: 25px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
+             <button class="action-btn" onclick="cropper.rotate(90)"><i class="fa-solid fa-rotate-right"></i> Rotate</button>
+             <button class="action-btn" onclick="flipXImage()"><i class="fa-solid fa-arrows-left-right"></i> Flip H</button>
+             <button class="action-btn" onclick="flipYImage()"><i class="fa-solid fa-arrows-up-down"></i> Flip V</button>
+             <button class="action-btn" onclick="resetCrop()" style="color: #ff5252; border-color: rgba(255,82,82,0.3);"><i class="fa-solid fa-undo"></i> Reset All</button>
+        </div>
+
+        <form action="{{ url_for('create') }}" method="POST" enctype="multipart/form-data" id="editorForm">
+             <input type="file" name="file" id="fileInput" style="display: none;" onchange="this.form.submit()">
+        </form>
+    </div>
+
+    <div class="controls-section">
+        <button onclick="saveFinalImage()" class="commit-btn">
+            <i class="fa-solid fa-heart" style="margin-right: 10px;"></i> SAVE & EXPORT
+        </button>
+
+        <div class="section-title"><i class="fa-solid fa-shapes"></i> Canvas Shapes</div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 25px;">
+            <button class="action-btn" onclick="activateCrop(1)">1:1</button>
+            <button class="action-btn" onclick="activateCrop(1.5)">3:2</button>
+            <button class="action-btn" onclick="activateCrop(1.777)">16:9</button>
+        </div>
+
+        <div class="slider-item">
+            <label>Manual Straighten <span id="rot-val" class="value-tag">0°</span></label>
+            <input type="range" id="free-rotate" min="-45" max="45" value="0" oninput="freeRotate(this.value); document.getElementById('rot-val').innerText=this.value+'°'">
+        </div>
+
+        <div class="section-title"><i class="fa-solid fa-magic"></i> Artistic Vibes</div>
+        <div class="filter-grid">
+            <button class="filter-btn active" onclick="setFilter('none', this)">Original</button>
+            <button class="filter-btn" onclick="setFilter('bw', this)">B&W</button>
+            <button class="filter-btn" onclick="setFilter('vintage', this)">Vintage Gold</button>
+            <button class="filter-btn" onclick="setFilter('dramatic', this)">Dramatic</button> 
+            <button class="filter-btn" onclick="setFilter('cool', this)">Cool Oasis</button>
+            <button class="filter-btn" onclick="setFilter('sunset', this)">Warm Sunset</button>
+            <button class="filter-btn" onclick="setFilter('emerald', this)">Emerald</button>
+            <button class="filter-btn" onclick="setFilter('cyber', this)">Cyberpunk</button>
+        </div>
+
+        <div class="section-title"><i class="fa-solid fa-sun"></i> Luminance</div>
+        <div class="slider-item">
+            <label>Brightness <span id="br-val" class="value-tag">100%</span></label>
+            <input type="range" id="brightness" min="0" max="200" value="100" oninput="applyAllStyles(); updateLabel('br-val', this.value+'%')">
+        </div>
+        <div class="slider-item">
+            <label>Contrast <span id="cn-val" class="value-tag">100%</span></label>
+            <input type="range" id="contrast" min="0" max="200" value="100" oninput="applyAllStyles(); updateLabel('cn-val', this.value+'%')">
+        </div>
+        <div class="slider-item">
+            <label>Exposure <span id="ex-val" class="value-tag">100%</span></label>
+            <input type="range" id="exposure" min="50" max="150" value="100" oninput="applyAllStyles(); updateLabel('ex-val', this.value+'%')">
+        </div>
+
+        <div class="section-title"><i class="fa-solid fa-palette"></i> Color Matrix</div>
+        <div class="slider-item">
+            <label>Temperature <span id="tp-val" class="value-tag">0°</span></label>
+            <input type="range" id="temp" min="-50" max="50" value="0" oninput="applyAllStyles(); updateLabel('tp-val', this.value+'°')">
+        </div>
+        <div class="slider-item">
+            <label>Saturation <span id="st-val" class="value-tag">100%</span></label>
+            <input type="range" id="saturate" min="0" max="200" value="100" oninput="applyAllStyles(); updateLabel('st-val', this.value+'%')">
+        </div>
+
+        <div class="section-title"><i class="fa-solid fa-eye"></i> Optical Details</div>
+        <div class="slider-item">
+            <label>Sharpness <span id="sh-val" class="value-tag">100%</span></label>
+            <input type="range" id="sharp" min="100" max="200" value="100" oninput="applyAllStyles(); updateLabel('sh-val', this.value+'%')">
+        </div>
+        <div class="slider-item">
+            <label>Atmospheric Blur <span id="bl-val" class="value-tag">0px</span></label>
+            <input type="range" id="blur" min="0" max="10" value="0" oninput="applyAllStyles(); updateLabel('bl-val', this.value+'px')">
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<script>
+    let cropper;
+    let filterPreset = 'none';
+    let scaleX = 1;
+    let scaleY = 1;
+
+    window.onload = function() {
+        const image = document.getElementById('main-preview');
+        if (image) {
+            cropper = new Cropper(image, {
+                viewMode: 1, 
+                autoCrop: false, 
+                dragMode: 'crop', 
+                background: false, 
+                guides: true, 
+                center: true,
+                ready() { 
+                    applyAllStyles(); 
+                }
+            });
+        }
+    };
+
+    function updateLabel(id, text) {
+        const el = document.getElementById(id);
+        if(el) el.innerText = text;
+    }
+
+    function activateCrop(ratio) { 
+        cropper.setAspectRatio(ratio); 
+        cropper.crop(); 
+    }
+    
+    function freeRotate(deg) { 
+        cropper.rotateTo(deg); 
+    }
+
+    function resetCrop() { 
+        cropper.reset(); 
+        cropper.setAspectRatio(NaN); 
+        document.getElementById('free-rotate').value = 0; 
+        updateLabel('rot-val', '0°');
+
+        const defaults = {
+            'brightness': 100, 'contrast': 100, 'exposure': 100,
+            'temp': 0, 'saturate': 100, 'sharp': 100, 'blur': 0
+        };
+        
+        for (const [id, val] of Object.entries(defaults)) {
+            const el = document.getElementById(id);
+            if(el) el.value = val;
+        }
+        
+        filterPreset = 'none';
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector('.filter-btn[onclick*="none"]').classList.add('active');
+        
+        applyAllStyles();
+        updateLabel('br-val', '100%'); updateLabel('cn-val', '100%'); updateLabel('st-val', '100%');
+    }
+
+    function setFilter(p, btn) {
+        filterPreset = p;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        applyAllStyles();
+    }
+
+    function applyAllStyles() {
+        const b = document.getElementById('brightness').value;
+        const c = document.getElementById('contrast').value;
+        const s = document.getElementById('saturate').value;
+        const e = document.getElementById('exposure').value;
+        const bl = document.getElementById('blur').value;
+        const sh = document.getElementById('sharp').value;
+        const t = document.getElementById('temp').value;
+
+        let filterStr = `brightness(${b}%) contrast(${c}%) saturate(${s}%) blur(${bl}px) contrast(${sh}%) brightness(${e}%) hue-rotate(${t}deg) `;
+        
+        if (filterPreset === 'bw') {
+            filterStr += 'grayscale(100%) brightness(110%) ';
+        } else if (filterPreset === 'vintage') {
+            filterStr += 'sepia(45%) hue-rotate(-25deg) saturate(120%) ';
+        } else if (filterPreset === 'dramatic') {
+            filterStr += 'contrast(140%) brightness(105%) saturate(110%) ';
+        } else if (filterPreset === 'cool') {
+            filterStr += 'hue-rotate(180deg) saturate(140%) brightness(110%) ';
+        } else if (filterPreset === 'sunset') {
+            filterStr += 'sepia(30%) hue-rotate(-50deg) saturate(160%) ';
+        } else if (filterPreset === 'emerald') {
+            filterStr += 'hue-rotate(80deg) saturate(120%) contrast(110%) ';
+        } else if (filterPreset === 'cyber') {
+            filterStr += 'hue-rotate(280deg) saturate(200%) contrast(120%) ';
+        }
+
+        const targets = document.querySelectorAll('.cropper-canvas img, .cropper-view-box img');
+        targets.forEach(img => { img.style.filter = filterStr; });
+    }
+
+    function flipXImage() { scaleX *= -1; cropper.scaleX(scaleX); }
+    function flipYImage() { scaleY *= -1; cropper.scaleY(scaleY); }
+
+    function saveFinalImage() {
+        const croppedCanvas = cropper.getCroppedCanvas({ imageSmoothingQuality: 'high' });
+        const finalCanvas = document.createElement('canvas');
+        finalCanvas.width = croppedCanvas.width;
+        finalCanvas.height = croppedCanvas.height;
+        const ctx = finalCanvas.getContext('2d');
+
+        // 1. Get current values
+        const b = document.getElementById('brightness').value;
+        const c = document.getElementById('contrast').value;
+        const s = document.getElementById('saturate').value;
+        const e = document.getElementById('exposure').value;
+        const bl = document.getElementById('blur').value;
+        const sh = document.getElementById('sharp').value;
+        const t = document.getElementById('temp').value;
+
+        // 2. Build the EXACT filter string used in preview
+        let filterStr = `brightness(${b}%) contrast(${c}%) saturate(${s}%) blur(${bl}px) contrast(${sh}%) brightness(${e}%) hue-rotate(${t}deg) `;
+        
+        // 3. Include Artistic Presets logic
+        if (filterPreset === 'bw') filterStr += 'grayscale(100%) brightness(110%) ';
+        else if (filterPreset === 'vintage') filterStr += 'sepia(45%) hue-rotate(-25deg) saturate(120%) ';
+        else if (filterPreset === 'dramatic') filterStr += 'contrast(140%) brightness(105%) saturate(110%) ';
+        else if (filterPreset === 'cool') filterStr += 'hue-rotate(180deg) saturate(140%) brightness(110%) ';
+        else if (filterPreset === 'sunset') filterStr += 'sepia(30%) hue-rotate(-50deg) saturate(160%) ';
+        else if (filterPreset === 'emerald') filterStr += 'hue-rotate(80deg) saturate(120%) contrast(110%) ';
+        else if (filterPreset === 'cyber') filterStr += 'hue-rotate(280deg) saturate(200%) contrast(120%) ';
+
+        // 4. Apply to Canvas and Download
+        ctx.filter = filterStr;
+        ctx.drawImage(croppedCanvas, 0, 0);
+        
+        const link = document.createElement('a');
+        link.download = 'pixel-perfection-masterpiece.png';
+        link.href = finalCanvas.toDataURL('image/png');
+        link.click();
+    }
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+
+    if (dropZone) {
+        dropZone.addEventListener('dragover', (e) => { 
+            e.preventDefault(); 
+            dropZone.style.background = 'rgba(255,138,128,0.1)'; 
+        });
+        dropZone.addEventListener('dragleave', () => { 
+            dropZone.style.background = 'rgba(0,0,0,0.2)'; 
+        });
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileInput.files = e.dataTransfer.files;
+            document.getElementById('editorForm').submit();
+        });
+    }
+</script>
+{% endblock %}

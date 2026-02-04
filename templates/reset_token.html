@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="auth-page-wrapper" style="background-color: #f3e8ff; min-height: 92vh; display: flex; align-items: center; justify-content: center;">
+    <div class="glass-signup-card" style="background: white; padding: 40px; border-radius: 30px; width: 100%; max-width: 450px;">
+        <h2 style="text-align: center; font-family: 'Playfair Display';">Create New Password</h2>
+        <form method="POST">
+            <div class="input-field" style="position: relative; margin-bottom: 20px;">
+                <i class="fas fa-lock" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: #7b4fb6;"></i>
+                <input type="password" name="password" placeholder="New Password" required style="width: 100%; padding: 16px 55px; border-radius: 15px; border: 2px solid #f3f4f6; outline: none;">
+            </div>
+            <button type="submit" class="account-button signup" style="width: 100%; padding: 18px; background: #7b4fb6; color: white; border: none; border-radius: 15px; font-weight: bold; cursor: pointer;">Update Password</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

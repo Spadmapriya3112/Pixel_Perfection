@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    /* 1. Global Page Background */
+    body {
+        background-color: #1a1a2e !important; 
+        margin: 0;
+        overflow-x: hidden;
+    }
+
+    /* 2. Wrapper */
+    .auth-page-wrapper {
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(circle at center, #252545 0%, #1a1a2e 100%) !important;
+        padding: 20px;
+    }
+
+    /* 3. Glassmorphism Card Style */
+    .glass-signup-card {
+        background: rgba(255, 255, 255, 0.03) !important;
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        padding: 50px 40px;
+        border-radius: 40px;
+        width: 100%;
+        max-width: 450px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        text-align: center;
+        box-sizing: border-box; /* Ensures padding stays inside the card */
+    }
+
+    .reset-title {
+        font-family: 'Dancing Script', cursive;
+        font-size: 2.8rem;
+        color: #ffffff;
+        margin-bottom: 10px;
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+    }
+
+    .reset-subtitle {
+        color: #b0b0d1;
+        font-family: 'Quicksand', sans-serif;
+        font-size: 1rem;
+        margin-bottom: 30px;
+        display: block;
+    }
+
+    /* 4. FIXED Input Field Styling */
+    .input-group {
+        position: relative;
+        margin-bottom: 25px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .input-group i {
+        position: absolute;
+        left: 20px;
+        color: #ff8a80;
+        z-index: 10;
+    }
+
+    .input-group input {
+        width: 100%;
+        padding: 16px 20px 16px 55px; /* Extra left padding for the icon */
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.05);
+        color: white;
+        outline: none;
+        transition: 0.3s;
+        box-sizing: border-box; /* CRITICAL FIX: Keeps input from overflowing */
+        font-size: 1rem;
+    }
+
+    .input-group input:focus {
+        border-color: #ff8a80;
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 15px rgba(255, 138, 128, 0.2);
+    }
+
+    /* 5. Button Styling */
+    .btn-ethereal-action {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(45deg, #ff8a80, #ff5252) !important;
+        color: white;
+        border: none;
+        border-radius: 100px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        box-shadow: 0 10px 25px rgba(255, 138, 128, 0.3);
+    }
+
+    .btn-ethereal-action:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(255, 138, 128, 0.5);
+    }
+
+    .back-link {
+        margin-top: 25px;
+        display: block;
+        color: #b0b0d1;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: 0.3s;
+    }
+
+    .back-link:hover { color: #ff8a80; }
+</style>
+
+<div class="auth-page-wrapper">
+    <div class="glass-signup-card">
+        <div style="margin-bottom: 15px;">
+            <i class="fas fa-wand-magic-sparkles" style="font-size: 2.5rem; color: #ff8a80; filter: drop-shadow(0 0 10px rgba(255, 138, 128, 0.5));"></i>
+        </div>
+        
+        <h2 class="reset-title">Restore Access</h2>
+        <span class="reset-subtitle">Enter your email to receive a magic link</span>
+
+        <form method="POST">
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" name="email" placeholder="Email Address" required>
+            </div>
+            
+            <button type="submit" class="btn-ethereal-action">Send Reset Link</button>
+        </form>
+
+        <a href="{{ url_for('login') }}" class="back-link">
+            <i class="fas fa-arrow-left" style="font-size: 0.8rem; margin-right: 5px;"></i> Back to Login
+        </a>
+    </div>
+</div>
+{% endblock %}

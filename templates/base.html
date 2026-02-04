@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Perfection | Stylish Editor</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --accent-color: #ff8a80; /* Soft Peach / Neon Pink */
+            --bg-midnight: #1a1a2e;  /* Midnight Background */
+            --text-main: #e0e0e0;    /* Lightened for readability */
+            --nav-bg: rgba(26, 26, 46, 0.95); /* Dark transparent nav */
+            --card-dark: rgba(255, 255, 255, 0.05);
+            --neon-shadow: 0 0 15px rgba(255, 138, 128, 0.4);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-midnight);
+            color: var(--text-main);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- Stylish Midnight Navbar --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5%;
+            background: var(--nav-bg);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 70px;
+            backdrop-filter: blur(10px);
+        }
+
+        .brand-logo {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            color: #ffffff;
+            text-decoration: none;
+            white-space: nowrap;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .brand-logo span {
+            color: var(--accent-color);
+            text-shadow: var(--neon-shadow);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #bbbbbb;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.05);
+            text-shadow: var(--neon-shadow);
+        }
+
+        .nav-create {
+            border: 1.5px solid var(--accent-color) !important;
+            color: var(--accent-color) !important;
+            box-shadow: var(--neon-shadow);
+        }
+
+        .nav-create:hover {
+            background: var(--accent-color) !important;
+            color: white !important;
+            box-shadow: 0 0 20px rgba(255, 138, 128, 0.6) !important;
+        }
+
+        /* --- Flash Messages --- */
+        .flash-container {
+            padding: 10px 10%;
+            position: absolute;
+            width: 80%;
+            z-index: 999;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+        }
+
+        .alert-success { background: rgba(76, 175, 80, 0.2); color: #81c784; border: 1px solid #4caf50; }
+        .alert-danger { background: rgba(244, 67, 54, 0.2); color: #e57373; border: 1px solid #f44336; }
+        .alert-info { background: rgba(33, 150, 243, 0.2); color: #64b5f6; border: 1px solid #2196f3; }
+
+        /* --- Side Menu --- */
+        .side-menu {
+            position: fixed;
+            right: -350px; 
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background: #161626; 
+            box-shadow: -15px 0 40px rgba(0, 0, 0, 0.7);
+            transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1);
+            padding: 60px 25px;
+            z-index: 2500;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .side-menu.active { right: 0; }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--accent-color);
+            transition: transform 0.3s ease;
+        }
+
+        .close-btn:hover { transform: rotate(90deg); }
+
+        .hamburger {
+            font-size: 22px;
+            color: var(--accent-color);
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: all 0.3s;
+            margin-left: 15px;
+        }
+
+        .hamburger:hover {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: var(--neon-shadow);
+        }
+
+        .account-btn {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 30px;
+            border: none;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            display: block;
+            text-decoration: none;
+        }
+
+        .signup-btn { background: var(--accent-color); color: white; }
+        .signup-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(255, 138, 128, 0.4); }
+
+        .login-btn { background: rgba(255, 255, 255, 0.05); color: var(--accent-color); border: 1px solid rgba(255, 138, 128, 0.3); }
+        .login-btn:hover { background: rgba(255, 138, 128, 0.1); border-color: var(--accent-color); }
+
+        /* --- NEW: TOOL CONTROL WRAPPER & NUMBER INPUT --- */
+        .tool-control-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .ai-slider-input {
+            flex-grow: 1;
+            cursor: pointer;
+            accent-color: var(--accent-color);
+        }
+
+        .slider-number-input {
+            width: 55px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 138, 122, 0.3);
+            border-radius: 8px;
+            color: white;
+            padding: 5px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            text-align: center;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .slider-number-input:focus {
+            border-color: var(--accent-color);
+            box-shadow: var(--neon-shadow);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="{{ url_for('home') }}" class="brand-logo">
+            Pixel<span> Perfection</span>
+        </a>
+        
+        <div style="display: flex; align-items: center;">
+            <nav class="nav-links">
+                <a href="{{ url_for('home') }}">Home</a>
+                <a href="{{ url_for('about') }}">Our Story</a>
+                <a href="{{ url_for('pricing') }}">Pricing</a>
+                <a href="{{ url_for('contact') }}">Contact</a>
+                
+                <a href="{{ url_for('create') }}" class="nav-create">
+                    <i class="fas fa-magic"></i> Create
+                </a>
+            </nav>
+            
+            <i class="fas fa-user-circle hamburger" id="menuOpen"></i>
+        </div>
+    </header>
+
+    <main>
+        <div class="flash-container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <div class="side-menu" id="sideMenu">
+        <span class="close-btn" id="menuClose">&times;</span>
+        <h2 style="font-family: 'Dancing Script'; font-size: 2.5rem; margin-bottom: 30px; color: #fff;">Welcome</h2>
+        
+    <div style="width: 100%;">
+        {% if session.get('username') %}
+            <a href="{{ url_for('home') }}" class="account-btn signup-btn">Back Home</a>
+            <a href="{{ url_for('logout') }}" class="account-btn login-btn">Sign Out</a>
+        {% else %}
+            <a href="{{ url_for('signup') }}" class="account-btn signup-btn">Join the Lab</a>
+            <a href="{{ url_for('login') }}" class="account-btn login-btn">Login</a>
+        {% endif %}
+</div>
+    </div>
+
+    <script>
+        const sideMenu = document.getElementById("sideMenu");
+        const openBtn = document.getElementById("menuOpen");
+        const closeBtn = document.getElementById("menuClose");
+
+        openBtn.addEventListener("click", () => sideMenu.classList.add("active"));
+        closeBtn.addEventListener("click", () => sideMenu.classList.remove("active"));
+
+        document.addEventListener("click", (e) => {
+            if (!sideMenu.contains(e.target) && !openBtn.contains(e.target)) {
+                sideMenu.classList.remove("active");
+            }
+        });
+
+        // Automatically hide flash messages after 4 seconds
+        setTimeout(() => {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.style.transition = "opacity 0.5s ease";
+                alert.style.opacity = "0";
+                setTimeout(() => alert.remove(), 500);
+            });
+        }, 4500);
+    </script>
+</body>
+</html>

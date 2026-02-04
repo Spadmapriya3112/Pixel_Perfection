@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="studio-wrapper" style="padding: 80px 5%; min-height: 90vh;">
+    <div style="text-align: center; margin-bottom: 60px;">
+        <h1 style="font-family: 'Playfair Display'; font-size: 3.5rem; color: #ffffff;">Simple <span style="color: #ff8a80;">Pricing</span></h1>
+        <p style="color: #a0a0a0; font-size: 1.1rem;">Choose the perfect plan for your creative journey.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; max-width: 1200px; margin: 0 auto;">
+        
+        <div class="pricing-card" style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); padding: 40px; border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; transition: 0.3s; display: flex; flex-direction: column;">
+            <h3 style="color: #ffffff; font-family: 'Playfair Display'; font-size: 1.6rem; margin-bottom: 10px;">Free</h3>
+            <div class="price">
+                <span style="font-size: 2.8rem; font-weight: 800; color: #ff8a80;">₹0</span>
+                <span style="color: #a0a0a0;">/mo</span>
+            </div>
+            
+            <ul style="list-style: none; padding: 0; margin: 30px 0; text-align: left; line-height: 1.8; flex-grow: 1;">
+                <li style="margin-bottom: 12px; color: #e0e0e0;"><i class="fas fa-check" style="color: #ff8a80; margin-right: 10px;"></i> 5 AI Edits per month</li>
+                <li style="margin-bottom: 12px; color: #e0e0e0;"><i class="fas fa-check" style="color: #ff8a80; margin-right: 10px;"></i> Standard Denoising</li>
+                <li style="margin-bottom: 12px; color: rgba(255, 255, 255, 0.3);"><i class="fas fa-times" style="margin-right: 10px;"></i> High-Res Export</li>
+            </ul>
+
+            <a href="{{ url_for('create') }}" style="color: #ff8a80; text-decoration: none; font-weight: 700; border: 2px solid #ff8a80; padding: 12px; border-radius: 12px; transition: 0.3s;">
+                Get Started
+            </a>
+        </div>
+
+        <div class="pricing-card" style="background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); padding: 40px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); text-align: center; transition: 0.3s; display: flex; flex-direction: column; border: 2px solid #ff8a80; position: relative;">
+            <div style="background: #ff8a80; color: white; display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; position: absolute; top: -15px; left: 50%; transform: translateX(-50%); text-transform: uppercase;">Flexible</div>
+            <h3 style="color: #ffffff; font-family: 'Playfair Display'; font-size: 1.6rem; margin-bottom: 10px;">Monthly</h3>
+            <div class="price">
+                <span style="font-size: 2.8rem; font-weight: 800; color: #ff8a80;">₹99</span>
+                <span style="color: #a0a0a0;">/mo</span>
+            </div>
+            
+            <ul style="list-style: none; padding: 0; margin: 30px 0; text-align: left; line-height: 1.8; flex-grow: 1;">
+                <li style="margin-bottom: 12px; color: #e0e0e0;"><i class="fas fa-check" style="color: #ff8a80; margin-right: 10px;"></i> Unlimited AI Edits</li>
+                <li style="margin-bottom: 12px; color: #e0e0e0;"><i class="fas fa-check" style="color: #ff8a80; margin-right: 10px;"></i> Deep Neural Cleaning</li>
+                <li style="margin-bottom: 12px; color: #e0e0e0;"><i class="fas fa-check" style="color: #ff8a80; margin-right: 10px;"></i> 4K Ultra-HD Export</li>
+            </ul>
+
+            <a href="{{ url_for('signup') }}" style="background: #ff8a80; color: white; text-decoration: none; font-weight: 700; padding: 14px; border-radius: 12px; transition: 0.3s; box-shadow: 0 5px 15px rgba(255, 138, 128, 0.3);">
+                Join Monthly
+            </a>
+        </div>
+
+        <div class="pricing-card" style="background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(10px); padding: 40px; border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.2); text-align: center; transition: 0.3s; display: flex; flex-direction: column; position: relative;">
+            <div style="background: white; color: #1a1a2e; display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; position: absolute; top: -15px; left: 50%; transform: translateX(-50%); text-transform: uppercase;">Best Value</div>
+            <h3 style="color: white; font-family: 'Playfair Display'; font-size: 1.6rem; margin-bottom: 10px;">Yearly</h3>
+            <div class="price">
+                <span style="font-size: 2.8rem; font-weight: 800; color: #ff8a80;">₹999</span>
+                <span style="color: white; opacity: 0.8;">/yr</span>
+            </div>
+            
+            <ul style="list-style: none; padding: 0; margin: 30px 0; text-align: left; line-height: 1.8; flex-grow: 1;">
+                <li style="margin-bottom: 12px; color: white;"><i class="fas fa-check" style="color: #ff8a80; margin-right: 10px;"></i> Everything in Monthly</li>
+                <li style="margin-bottom: 12px; color: white;"><i class="fas fa-check" style="color: #ff8a80; margin-right: 10px;"></i> Priority Support</li>
+                <li style="margin-bottom: 12px; color: white;"><i class="fas fa-check" style="color: #ff8a80; margin-right: 10px;"></i> 2 Months Free</li>
+            </ul>
+            
+            <a href="{{ url_for('signup') }}" class="btn-aesthetic-glow" style="display: block; padding: 14px; background: white; color: #1a1a2e; text-decoration: none; border-radius: 12px; font-weight: 800; transition: 0.3s;">
+                Upgrade Yearly
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .pricing-card:hover {
+        transform: translateY(-10px);
+        border-color: #ff8a80;
+    }
+    
+    .btn-aesthetic-glow:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+        background-color: #ff8a80 !important;
+        color: white !important;
+    }
+
+    .pricing-card a:hover:not(.btn-aesthetic-glow) {
+        background-color: #ff8a80;
+        color: white !important;
+    }
+</style>
+{% endblock %}

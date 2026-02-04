@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="studio-wrapper">
+    <div class="master-studio-card">
+        <div class="studio-grid">
+            
+            <div class="canvas-section">
+                <h2 class="studio-title">Creative <span>Studio</span></h2>
+                <div class="canvas-frame" id="canvas-frame">
+                    {% if image_url %}
+                        <img src="{{ url_for('static', filename='uploads/' + image_url) }}" id="main-image" class="canvas-img">
+                    {% else %}
+                        <div class="upload-placeholder" onclick="document.getElementById('file-input').click()">
+                            <i class="fas fa-plus-circle"></i>
+                            <p>Upload to Start</p>
+                        </div>
+                    {% endif %}
+                    
+                    <div id="loader" class="loader-overlay" style="display:none;">
+                        <div class="spinner"></div>
+                        <p>AI is Enhancing...</p>
+                    </div>
+                </div>
+                
+                <div class="canvas-footer-btns">
+                    <button class="btn-glass-sub" id="compare-btn" onmousedown="showOriginal()" onmouseup="showEdited()" onmouseleave="showEdited()" ontouchstart="showOriginal()" ontouchend="showEdited()">
+                        Hold to see Original
+                    </button>
+                    <button class="btn-dark-sub" onclick="location.href='/editor'">Reset Canvas</button>
+                </div>
+            </div>
+
+            <div class="tools-section">
+                <h3 class="tools-title">Refine & Enhance</h3>
+                
+                <div class="tools-columns">
+                    <div class="tool-col">
+                        <div class="tool-item">
+                            <div class="tool-info"><span>AI Denoise</span><span class="badge" id="val1">75%</span></div>
+                            <input type="range" class="ai-slider-input" value="75" oninput="updateVal('val1', this.value)">
+                        </div>
+                        <div class="tool-item">
+                            <div class="tool-info"><span>Detail Clarity</span><span class="badge" id="val2">40%</span></div>
+                            <input type="range" class="ai-slider-input" value="40" oninput="updateVal('val2', this.value)">
+                        </div>
+                    </div>
+
+                    <div class="tool-col">
+                        <div class="tool-item">
+                            <div class="tool-info"><span>Exposure</span><span class="badge" id="val3">28%</span></div>
+                            <input type="range" class="ai-slider-input" value="28" oninput="updateVal('val3', this.value)">
+                        </div>
+                        <div class="tool-item">
+                            <div class="tool-info"><span>Vignette</span><span class="badge" id="val4">15%</span></div>
+                            <input type="range" class="ai-slider-input" value="15" oninput="updateVal('val4', this.value)">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="studio-actions">
+                    <button class="btn-process-ai" id="process-btn" onclick="processAI()">Process AI</button>
+                    {% if image_url %}
+                    <a href="{{ url_for('static', filename='uploads/' + image_url) }}" download="PixelPerfection_Edited" class="download-link">
+                        <i class="fas fa-download"></i> Download Masterpiece
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="upload-form" action="{{ url_for('editor') }}" method="POST" enctype="multipart/form-data" style="display: none;">
+    <input type="file" id="file-input" name="image" onchange="this.form.submit()">
+</form>
+
+<script src="{{ url_for('static', filename='editor.js') }}"></script>
+
+{% endblock %}

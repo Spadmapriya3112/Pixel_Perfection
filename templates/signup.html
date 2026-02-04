@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="auth-page-wrapper" style="min-height: 92vh; display: flex; align-items: center; justify-content: center; padding: 40px 20px;">
+    <div class="glass-signup-card" style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); padding: 40px; border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4); width: 100%; max-width: 450px; box-sizing: border-box;">
+        
+        <div style="text-align: center; margin-bottom: 20px;">
+            <i class="fas fa-wand-magic-sparkles" style="font-size: 2rem; color: #ff8a80;"></i>
+        </div>
+        
+        <div class="auth-header" style="text-align: center;">
+            <h2 style="font-family: 'Playfair Display', serif; color: #ffffff; font-size: 2.2rem; margin-bottom: 5px;">Join the <span style="color: #ff8a80;">Studio</span></h2>
+            <p style="margin-bottom: 25px; color: #e0e0e0; opacity: 0.8;">Start your creative journey with us</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('signup') }}">
+            <div class="input-field" style="position: relative; margin-bottom: 20px;">
+                <i class="fas fa-user" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: #ff8a80;"></i>
+                <input type="text" name="username" placeholder="Creative Name" required 
+                    style="width: 100%; padding: 16px 20px 16px 55px; border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 15px; font-size: 1rem; outline: none; background: rgba(0, 0, 0, 0.2); color: white; box-sizing: border-box;">
+            </div>
+
+            <div class="input-field" style="position: relative; margin-bottom: 20px;">
+                <i class="fas fa-envelope" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: #ff8a80;"></i>
+                <input type="email" name="email" placeholder="Email Address" required 
+                    style="width: 100%; padding: 16px 20px 16px 55px; border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 15px; font-size: 1rem; outline: none; background: rgba(0, 0, 0, 0.2); color: white; box-sizing: border-box;">
+            </div>
+            
+            <div class="input-field" style="position: relative; margin-bottom: 25px;">
+                <i class="fas fa-lock" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: #ff8a80;"></i>
+                <input type="password" name="password" placeholder="Secure Password" required 
+                    style="width: 100%; padding: 16px 20px 16px 55px; border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 15px; font-size: 1rem; outline: none; background: rgba(0, 0, 0, 0.2); color: white; box-sizing: border-box;">
+            </div>
+
+            <button type="submit" class="account-button signup" style="width: 100%; padding: 18px; background: #ff8a80; color: white; border: none; border-radius: 15px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(255, 138, 128, 0.2);">
+                Create Account
+            </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 25px; color: #e0e0e0;">
+            <p style="font-size: 0.95rem;">
+                Already a member? <a href="{{ url_for('login') }}" style="color: #ff8a80; font-weight: bold; text-decoration: none; border-bottom: 1px solid #ff8a80;">Login here</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Input Focus Effects */
+    input:focus {
+        border-color: #ff8a80 !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        box-shadow: 0 0 0 4px rgba(255, 138, 128, 0.15);
+    }
+    
+    /* Button Hover */
+    .account-button.signup:hover {
+        transform: translateY(-2px);
+        background: #ff7061;
+        box-shadow: 0 12px 25px rgba(255, 138, 128, 0.3);
+    }
+
+    /* Fix placeholder color for dark theme */
+    input::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+    }
+</style>
+{% endblock %}
