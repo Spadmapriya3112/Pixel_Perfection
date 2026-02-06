@@ -9,4 +9,5 @@ static/uploads/*
 # Ignore secrets and environment
 .env
 __pycache__/
-venv/
+venv/ 
+config.py
