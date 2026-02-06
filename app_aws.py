@@ -15,7 +15,7 @@ app = Flask(__name__)
 # --- AWS & APP CONFIGURATION ---
 app.secret_key = 'pixel_perfection_aws_secure_2026'
 REGION = 'us-east-1' 
-SNS_TOPIC_ARN = 'arn:aws:sns:us-east-1:YOUR_ACCOUNT_ID:YOUR_TOPIC_NAME'
+SNS_TOPIC_ARN = 'arn:aws:sns:us-east-1:881490100674:pixel_perfection'
 
 # --- LOCAL STORAGE CONFIG (Replacing S3) ---
 # On EC2, we use a local folder instead of an S3 bucket
